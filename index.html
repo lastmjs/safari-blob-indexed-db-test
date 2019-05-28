@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Safari Blob IndexedDB Test</title>
+    </head>
+
+    <body>
+        <button>Fetch and store audio blob into IndexedDB</button>
+        <audio controls></audio>
+
+        <script type="module">
+
+            document.querySelector('button').addEventListener('click', fetchAndStoreBlob);
+
+            import { set, get } from 'https://unpkg.com/idb-keyval/dist/idb-keyval.mjs';
+
+            async function fetchAndStoreBlob() {
+                try {
+                    const response = await window.fetch('https://upload.wikimedia.org/wikipedia/commons/transcoded/a/ab/Alexander_Graham_Bell%27s_Voice.ogg/Alexander_Graham_Bell%27s_Voice.ogg.mp3');
+    
+                    const blob = await response.blob();
+
+                    const idbKey = 'alexander-graham-bell-audio';
+
+                    await set(idbKey, blob);
+
+                    const retrievedBlob = await get(idbKey);
+
+                    document.querySelector('audio').src = window.URL.createObjectURL(retrievedBlob);
+                }
+                catch(error) {
+                    console.log(error);
+                    alert(error);
+                }
+            }
+        </script>
+    </body>
+
+</html>
