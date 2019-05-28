@@ -1,0 +1,1 @@
+# safari-blob-indexed-db-test
